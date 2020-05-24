@@ -1,0 +1,24 @@
+---
+# description: deploy grafana dashboards?
+# type: bool
+grafana_configure_dashboards: false
+
+# description: grafana dashboards git repo url
+# type: string
+# grafana_dashboards_git_url:
+
+# description: grafana dashboards git version to checkout
+# type: string
+grafana_dashboards_git_version: HEAD
+
+# description: configure grafana datasource
+# type: bool
+grafana_configure_datasources: true
+
+# description: grafana datasources list to provision
+# type: list
+grafana_datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://localhost:9000

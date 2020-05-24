@@ -1,0 +1,28 @@
+---
+- name: install git
+  apt:
+    name: git
+    state: present
+
+- name: clone the dashboards from git-repository
+  git:
+    repo: "{{ grafana_dashboards_git_url }}"
+    dest: /var/lib/grafana/dashboards
+    version: "{{ grafana_dashboards_git_version }}"
+
+- name: create provisioning dirs
+  file:
+    path: /etc/grafana/provisioning/dashboards
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: configure dashboard provisioners
+  copy:
+    src: grafana-dashboards.yml
+    dest: /etc/grafana/provisioning/dashboards/
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart grafana-server

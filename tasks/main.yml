@@ -1,0 +1,37 @@
+---
+- name: install prerequisites
+  apt:
+    name:
+      - apt-transport-https
+      - software-properties-common
+    state: present
+
+- name: add grafana gpg key
+  apt_key:
+    url: https://packages.grafana.com/gpg.key
+    state: present
+
+- name: add grafana repo
+  apt_repository:
+    repo: deb https://packages.grafana.com/oss/deb stable main
+    filename: grafana
+    state: present
+
+- name: install grafana
+  apt:
+    name: grafana
+    state: present
+
+- name: deploy grafana dashboards
+  include_tasks: dashboards.yml
+  when: grafana_configure_dashboards
+
+- name: configure datasources
+  include_tasks: datasources.yml
+  when: grafana_configure_datasources
+
+- name: ensure grafana service is running
+  service:
+    name: grafana-server
+    state: started
+    enabled: true

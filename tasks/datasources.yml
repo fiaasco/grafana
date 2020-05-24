@@ -1,0 +1,20 @@
+---
+- name: create provisioning dir
+  file:
+    path: /etc/grafana/provisioning/datasources
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: configure datasource provisioners
+  template:
+    src: datasources.yml.j2
+    dest: /etc/grafana/provisioning/datasources/datasources.yml
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart grafana-server
+
+- debug:
+    msg: "{{ grafana_datasources|to_nice_yaml(indent=2)|trim|indent(4) }}"
