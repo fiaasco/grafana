@@ -14,7 +14,6 @@ install:
 
 env:
   - SCENARIO=default
-  - SCENARIO=centos
   - SCENARIO=ubuntu
 
 script: "molecule test --scenario-name $SCENARIO"
